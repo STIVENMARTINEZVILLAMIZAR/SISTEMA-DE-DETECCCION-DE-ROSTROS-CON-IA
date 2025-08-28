@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Registro de Empresa</h2>
+<form method="post">
+  <label>Nombre de Empresa:</label>
+  <input type="text" name="nombre" required>
+  <label>Email:</label>
+  <input type="email" name="email" required>
+  <label>Contraseña:</label>
+  <input type="password" name="password" required>
+  <label>Número de WhatsApp (ej. 573001234567):</label>
+  <input type="text" name="notify_phone">
+  <button type="submit">Registrar</button>
+</form>
+<p>¿Ya tienes cuenta? <a href="{{ url_for('auth.login') }}">Inicia sesión</a></p>
+{% endblock %}

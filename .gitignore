@@ -1,0 +1,27 @@
+# Entornos virtuales
+venv/
+.env
+
+# Archivos de configuración sensibles
+*.pyc
+__pycache__/
+instance/
+.env*
+*.sqlite3
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de logs
+*.log
+
+# Archivos de IDE/Editor
+.vscode/
+.idea/
+*.swp
+
+# Archivos de dependencias locales
+*.egg-info/
+dist/
+build/

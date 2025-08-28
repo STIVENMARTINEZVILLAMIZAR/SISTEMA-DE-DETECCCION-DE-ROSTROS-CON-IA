@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Bienvenido {{ empresa }}</h2>
+
+<div class="dashboard">
+  <div class="card">
+    <h3>Stream de Cámara</h3>
+    <img src="{{ url_for('stream') }}" width="640" height="480" alt="Stream en vivo">
+  </div>
+  <div class="card">
+    <h3>Estadísticas</h3>
+    <canvas id="chartEvents"></canvas>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("/api/events")
+    .then(r => r.json())
+    .then(data => {
+      let conocidos = data.filter(e => !e.es_desconocido).length;
+      let desconocidos = data.filter(e => e.es_desconocido).length;
+      let ctx = document.getElementById("chartEvents").getContext("2d");
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Conocidos', 'Desconocidos'],
+          datasets: [{
+            data: [conocidos, desconocidos],
+            backgroundColor: ['#4caf50','#f44336']
+          }]
+        }
+      });
+    });
+});
+</script>
+{% endblock %}

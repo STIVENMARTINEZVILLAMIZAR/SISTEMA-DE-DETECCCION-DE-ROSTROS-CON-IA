@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Gestión de Personas</h2>
+
+<form id="formPerson">
+  <label>Nombre:</label>
+  <input type="text" name="nombre" required>
+  <label>Cargo:</label>
+  <input type="text" name="cargo">
+  <label>ID empleado:</label>
+  <input type="text" name="employee_id">
+  <button type="submit">Agregar Persona</button>
+</form>
+
+<table id="peopleTable">
+  <thead>
+    <tr>
+      <th>ID</th><th>Nombre</th><th>Cargo</th><th>Empleado</th><th>Embeddings</th><th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  loadPeople();
+  document.getElementById("formPerson").addEventListener("submit", async e => {
+    e.preventDefault();
+    let fd = new FormData(e.target);
+    let data = Object.fromEntries(fd.entries());
+    let res = await fetch("/api/people", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(data)});
+    let j = await res.json();
+    if (j.ok) { alert("Persona creada"); loadPeople(); }
+  });
+});
+
+async function loadPeople() {
+  let res = await fetch("/api/people");
+  let data = await res.json();
+  let tbody = document.querySelector("#peopleTable tbody");
+  tbody.innerHTML = "";
+  data.forEach(p => {
+    let tr = document.createElement("tr");
+    tr.innerHTML = `<td>${p.id}</td><td>${p.nombre}</td><td>${p.cargo||""}</td><td>${p.employee_id||""}</td>
+                    <td>${p.embeddings}</td>
+                    <td><input type="file" onchange="uploadPhoto(${p.id},this.files[0])"></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+async function uploadPhoto(pid,file){
+  let fd = new FormData();
+  fd.append("file", file);
+  let res = await fetch("/api/people/"+pid+"/photo",{method:"POST", body:fd});
+  let j = await res.json();
+  if(j.ok){ alert("Foto subida y embedding guardado"); loadPeople(); }
+  else{ alert("Error: "+j.error); }
+}
+</script>
+{% endblock %}

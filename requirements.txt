@@ -1,0 +1,12 @@
+Flask==2.3.2
+Flask-Session==0.4.0
+SQLAlchemy==2.0.31
+pymysql==1.1.1
+deepface==0.0.93
+opencv-python==4.10.0.84
+numpy==2.1.2
+Pillow==10.4.0
+python-dotenv==1.0.1
+selenium>=4.25.0
+webdriver-manager>=4.0.0
+requests==2.31.0

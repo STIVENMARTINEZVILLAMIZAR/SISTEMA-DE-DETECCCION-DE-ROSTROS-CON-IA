@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Eventos</h2>
+<table id="eventsTable">
+  <thead>
+    <tr><th>ID</th><th>Persona</th><th>Etiqueta</th><th>Desconocido</th><th>Similitud</th><th>Cámara</th><th>Fecha</th><th>Snapshot</th></tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  loadEvents();
+  setInterval(loadEvents, 5000);
+});
+
+async function loadEvents(){
+  let res = await fetch("/api/events");
+  let data = await res.json();
+  let tbody = document.querySelector("#eventsTable tbody");
+  tbody.innerHTML = "";
+  data.forEach(e => {
+    let tr = document.createElement("tr");
+    tr.innerHTML = `<td>${e.id}</td><td>${e.persona_id||""}</td><td>${e.label}</td>
+                    <td>${e.es_desconocido}</td><td>${e.similarity? e.similarity.toFixed(2):""}</td>
+                    <td>${e.camera}</td><td>${e.created_at}</td>
+                    <td>${e.snapshot? "<img src='"+e.snapshot+"' width=80>":""}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+</script>
+{% endblock %}
