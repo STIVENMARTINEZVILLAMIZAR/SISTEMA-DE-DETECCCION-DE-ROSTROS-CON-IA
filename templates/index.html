@@ -5,8 +5,16 @@
 <div class="dashboard">
   <div class="card">
     <h3>Stream de Cámara</h3>
-    <img src="{{ url_for('stream') }}" width="640" height="480" alt="Stream en vivo">
+    <div class="stream-container" style="width:640px; height:480px; border:1px solid #ccc; display:flex; align-items:center; justify-content:center;">
+      <!-- Mensaje de estado -->
+      <div id="camLoading" style="color:blue; font-weight:bold;">Conectando cámara...</div>
+      <!-- Stream -->
+      <img id="camStream" src="" width="640" height="480" alt="Stream en vivo" style="display:none;">
+      <!-- Error -->
+      <p id="camError" style="color:red; display:none;">⚠️ No se pudo abrir la cámara</p>
+    </div>
   </div>
+
   <div class="card">
     <h3>Estadísticas</h3>
     <canvas id="chartEvents"></canvas>
@@ -16,13 +24,38 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  const camStream = document.getElementById("camStream");
+  const camError = document.getElementById("camError");
+  const camLoading = document.getElementById("camLoading");
+
+  // Iniciar la cámara 0 automáticamente
+  function startCamera() {
+    camStream.style.display = "none";
+    camError.style.display = "none";
+    camLoading.style.display = "block";
+    camStream.src = "/stream/0";
+
+    camStream.onload = () => {
+      camLoading.style.display = "none";
+      camStream.style.display = "block";
+    };
+
+    camStream.onerror = () => {
+      camLoading.style.display = "none";
+      camError.style.display = "block";
+      camError.innerText = "⚠️ No se pudo abrir la cámara";
+    };
+  }
+
+  startCamera();
+
+  // Cargar estadísticas
   fetch("/api/events")
     .then(r => r.json())
     .then(data => {
-      let conocidos = data.filter(e => !e.es_desconocido).length;
-      let desconocidos = data.filter(e => e.es_desconocido).length;
-      let ctx = document.getElementById("chartEvents").getContext("2d");
-      new Chart(ctx, {
+      const conocidos = data.filter(e => !e.es_desconocido).length;
+      const desconocidos = data.filter(e => e.es_desconocido).length;
+      new Chart(document.getElementById("chartEvents").getContext("2d"), {
         type: 'pie',
         data: {
           labels: ['Conocidos', 'Desconocidos'],

@@ -4,9 +4,10 @@ USE seguridad_facial;
 CREATE TABLE empresas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL, -- login
     password_hash VARCHAR(255) NOT NULL,
-    notify_phone VARCHAR(40) DEFAULT NULL, -- número internacional sin +
+    notify_email VARCHAR(100) DEFAULT NULL, -- correo para alertas
+    notify_phone VARCHAR(40) DEFAULT NULL,  -- número internacional sin +
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
