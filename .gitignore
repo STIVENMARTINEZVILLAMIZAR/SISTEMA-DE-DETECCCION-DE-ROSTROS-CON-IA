@@ -1,27 +1,29 @@
-# Entornos virtuales
+# === Entornos virtuales ===
 venv/
-.env
+.venv/
+.venv311/
 
-# Archivos de configuración sensibles
+# === Archivos de configuración sensibles ===
+.env
+.env.*
 *.pyc
 __pycache__/
 instance/
-.env*
 *.sqlite3
 
-# Archivos de sistema
+# === Archivos de sistema ===
 .DS_Store
 Thumbs.db
 
-# Archivos de logs
+# === Archivos de logs ===
 *.log
 
-# Archivos de IDE/Editor
+# === Archivos de IDE/Editor ===
 .vscode/
 .idea/
 *.swp
 
-# Archivos de dependencias locales
+# === Archivos de dependencias locales ===
 *.egg-info/
 dist/
 build/

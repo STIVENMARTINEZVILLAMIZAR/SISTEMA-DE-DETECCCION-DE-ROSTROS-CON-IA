@@ -7,37 +7,39 @@
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </head>
 <body>
-  <header>
-    <nav>
-      <ul>
-        {% if session.get('empresa_id') %}
-          <li><a href="{{ url_for('index') }}">Dashboard</a></li>
-          <li><a href="{{ url_for('people_bp.people_page') }}">Personas</a></li>
-          <li><a href="{{ url_for('events_bp.events_page') }}">Eventos</a></li>
-          <li><a href="{{ url_for('auth.logout') }}">Salir ({{ session.get('empresa_nombre') }})</a></li>
-        {% else %}
-          <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-          <li><a href="{{ url_for('auth.register') }}">Registro</a></li>
+  <div class="wrapper">
+    <header>
+      <nav>
+        <ul>
+          {% if session.get('empresa_id') %}
+            <li><a href="{{ url_for('index') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('people_bp.people_page') }}">Personas</a></li>
+            <li><a href="{{ url_for('events_bp.events_page') }}">Eventos</a></li>
+            <li><a href="{{ url_for('auth.logout') }}">Salir ({{ session.get('empresa_nombre') }})</a></li>
+          {% else %}
+            <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+            <li><a href="{{ url_for('auth.register') }}">Registro</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="flash">
+            {% for m in messages %}
+              <p>{{ m }}</p>
+            {% endfor %}
+          </div>
         {% endif %}
-      </ul>
-    </nav>
-  </header>
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
 
-  <main>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <div class="flash">
-          {% for m in messages %}
-            <p>{{ m }}</p>
-          {% endfor %}
-        </div>
-      {% endif %}
-    {% endwith %}
-    {% block content %}{% endblock %}
-  </main>
-
-  <footer>
-    <p>Sistema de Detección de Rostros con IA © 2025</p>
-  </footer>
+    <footer>
+      <p>Sistema de Detección de Rostros con IA © 2025</p>
+    </footer>
+  </div>
 </body>
 </html>

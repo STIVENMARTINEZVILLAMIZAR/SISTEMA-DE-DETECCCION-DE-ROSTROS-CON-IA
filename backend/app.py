@@ -12,7 +12,13 @@ from flask_session import Session
 # crear tablas
 Base.metadata.create_all(bind=engine)
 
-app = Flask(__name__, template_folder='../templates', static_folder='static')
+# inicializar Flask con rutas absolutas a templates y static
+app = Flask(
+    __name__,
+    template_folder=os.path.join(os.path.dirname(__file__), '../templates'),
+    static_folder=os.path.join(os.path.dirname(__file__), '../static')
+)
+
 app.config['SECRET_KEY'] = SECRET_KEY
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
@@ -21,7 +27,7 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(people_bp)
 app.register_blueprint(events_bp)
 
-# iniciar worker (empresa_id=None para demo) -> puedes cambiar para arrancar con empresa_id específica
+# iniciar worker (empresa_id=None para demo)
 camera_source = os.getenv('CAMERA_SOURCE', '0')
 worker = CameraWorker(source=camera_source, camera_name='CAM1', empresa_id=None)
 worker.start()

@@ -1,12 +1,43 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2>Iniciar Sesión</h2>
-<form method="post">
-  <label>Email:</label>
-  <input type="email" name="email" required>
-  <label>Contraseña:</label>
-  <input type="password" name="password" required>
-  <button type="submit">Entrar</button>
-</form>
-<p>¿No tienes cuenta? <a href="{{ url_for('auth.register') }}">Regístrate aquí</a></p>
+<!-- PORTADA -->
+<div class="portada-hero" id="portada-hero">
+  <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="logo-portada">
+  <h1>Bienvenido al Sistema de Detección Facial</h1>
+  <p>Monitoreo inteligente y seguro con tecnología IA</p>
+  <button id="show-login">Explorar</button>
+</div>
+
+<!-- LOGIN FORMULARIO -->
+<div class="login-form-container" id="login-form">
+  <h2>Iniciar Sesión</h2>
+  <form method="post" action="{{ url_for('auth.login') }}">
+    <label>Email:</label>
+    <input type="email" name="email" required>
+    <label>Contraseña:</label>
+    <input type="password" name="password" required>
+    <button type="submit">Entrar</button>
+  </form>
+  <p>¿No tienes cuenta? <a href="{{ url_for('auth.register') }}">Regístrate aquí</a></p>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const showLoginBtn = document.getElementById('show-login');
+  const loginForm = document.getElementById('login-form');
+  const portadaHero = document.getElementById('portada-hero');
+
+  showLoginBtn.addEventListener('click', () => {
+    // Fade-out portada
+    portadaHero.style.opacity = 0;
+    setTimeout(() => {
+      portadaHero.style.display = 'none';
+      // Mostrar login con fade-in
+      loginForm.style.display = 'block';
+      setTimeout(() => { loginForm.style.opacity = 1; }, 50);
+    }, 500);
+  });
+});
+</script>
 {% endblock %}
+
